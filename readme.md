@@ -70,7 +70,7 @@ mean: 0.12734580039978027, std: 0.008269703592629206 len: 10
 
 The list just shows the elapsed time (second) for every parallel evaluate. The ideal value is 0.05, but we found mean value 0.12. The error is 0.12-0.05=0.07. 
 
-Slow mode (x10 sleep time, [why](###why)?)
+Slow mode (x10 sleep time, [why](#Why)?)
 
 ```shell
 $ python fake_launch_servers.py --coef 10
@@ -88,7 +88,7 @@ mean: 0.5766829967498779, std: 0.01413372427198757 len: 10
 
 The ideal value is 0.5, the error is 0.57-0.5=0.07.
 
-Slower mode (x100 sleep time, [why](###hwy)?)
+Slower mode (x100 sleep time, [why](#Why)?)
 
 ```shell
 $ python fake_launch_servers.py --coef 100
@@ -121,7 +121,7 @@ In [81]: %%timeit
 
 So the `70ms` error is reasonable, anyway the slowest example has shown the parallel cost (5.067905068397522) is better than sequential cost (5+4+3=12).
 
-Another reason is latency of ZMQ, see [Overhead example](##Overhead)
+Another reason is latency of ZMQ, see [Overhead example](#Overhead)
 
 Debug:
 
