@@ -153,3 +153,63 @@ python zmq_overhead_test_client.py --width 800 --height 600 # 800 x 600 x 3 uint
 # time_elapsed=0.6016485691070557 mean=0.006016485691070557
 # 6ms, it depends.
 ```
+
+## Vanilla Socket Overhead
+
+Start three servers:
+
+```shell
+python socket_overhead_multi.py server
+```
+
+Start three clients:
+
+```shell
+python socket_overhead_multi.py client
+```
+
+The output:
+```
+Connecting to 127.0.0.1:10002
+Connecting to 127.0.0.1:10000
+Connecting to 127.0.0.1:10001
+Second per send_and_recv: 0.0103552674
+10.355267399999999
+Second per send_and_recv: 0.0156795476
+15.6795476
+Second per send_and_recv: 0.0164399412
+16.4399412
+```
+
+Interestingly, the more process(3 *thread* is used by supervisor process to inspect 3 *processes* running the real task.) will not increase speed. So it's limited by TCP bandwidth or copy speed?
+
+```shell
+python socket_overhead_multi.py server --n-thread 1 --number 1000
+
+python socket_overhead_multi.py client --n-thread 1 --number 1000
+```
+
+The output:
+```
+Connecting to 127.0.0.1:10000
+Second per send_and_recv: 0.0052526566
+5.2526566
+```
+
+A image is approximately `6Mb`, so a second processing `1200Mb` at most?
+
+For some reason, `socket_overhead_multi.py` will not work in Linux.
+
+## Baseline: multiprocessing
+
+Use shared numpy array and multiprocessing:
+
+```shell
+$ python baseline_pool.py
+```
+
+The output:
+```
+mean: 0.06414416122436524 std: 0.037146757524145264 len: 250
+[0.6500084400177002, 0.06398630142211914, 0.06078481674194336, 0.06593537330627441, 0.06520724296569824] ... [0.06170082092285156, 0.061620473861694336, 0.06216311454772949, 0.062009572982788086, 0.06300711631774902]
+```

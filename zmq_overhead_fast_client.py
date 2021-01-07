@@ -1,6 +1,6 @@
 import numpy as np
 import zmq
-from zmq_utils import send_array, recv_array
+from zmq_utils import send_array_fast, recv_array_fast
 import time
 import argparse
 
@@ -26,8 +26,8 @@ print(f"{type(x)} {x.shape}")
 
 time_begin = time.time()
 for i in range(args.samples):
-    send_array(server, x, copy=False)
-    recv_array(server, copy=False)
+    send_array_fast(server, x)
+    recv_array_fast(server)
 time_end = time.time()
 time_elapsed = time_end - time_begin
 
